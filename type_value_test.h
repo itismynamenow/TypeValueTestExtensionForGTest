@@ -146,8 +146,30 @@ namespace TVT {
             using tuple = typename makeValueIdFrequencyTupleImpl<ValuesIdTuple,std::make_index_sequence<tuple_size>>::tuple;
         };
 
+        template<typename Tuple, std::size_t I>
+        struct invertTupleImplBody{
+            static constexpr std::size_t tuple_size = std::tuple_size<Tuple>::value;
+            using value = typename std::tuple_element<tuple_size - I - 1,Tuple>::type;
+        };
+
+        template<typename Tuple, typename Is>
+        struct invertTupleImpl;
+
+        template< typename Tuple, std::size_t... Is>
+        struct invertTupleImpl<Tuple, std::index_sequence<Is...>>{
+            using tuple = typename std::tuple<typename invertTupleImplBody<Tuple,Is>::value...>;
+        };
+
+        template<typename Tuple>
+        struct invertTuple{
+            static constexpr std::size_t tuple_size = std::tuple_size<Tuple>::value;
+            using tuple = typename invertTupleImpl<Tuple,std::make_index_sequence<tuple_size>>::tuple;
+        };
+
         template<typename TypesTuple, typename ValuesIdProduct, std::size_t I>
         struct makeTypesTupleSizeTupleImplBody{
+
+            static constexpr std::size_t tuple_size = std::tuple_size<TypesTuple>::value;
             static constexpr std::size_t currentTypeSize = std::tuple_size<typename std::tuple_element<I,TypesTuple>::type>::value;
             static constexpr std::size_t product = (I==0) ? currentTypeSize * ValuesIdProduct::value : currentTypeSize ;
             using value = NUM<product>;
@@ -204,7 +226,9 @@ namespace TVT {
         static constexpr std::size_t valuesId_product = getProduct<ValuesIdTuple>::value;
 
         using ValuesIdFrequencies = typename makeValueIdFrequencyTuple<ValuesIdTuple>::tuple;
-        using TypesTupleSizeTuple = typename makeTypesTupleSizeTuple<TypesTuples,NUM<valuesId_product>>::tuple;
+
+        using InvertedTypesTuples = typename invertTuple<TypesTuples>::tuple;
+        using TypesTupleSizeTuple = typename makeTypesTupleSizeTuple<InvertedTypesTuples,NUM<valuesId_product>>::tuple;
         using TypesFrequencies = typename makeTypesFrequencyTuple<TypesTupleSizeTuple>::tuple;
 
         using tuple = typename make_combinations
