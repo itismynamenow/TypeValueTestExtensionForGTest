@@ -54,29 +54,42 @@ using typesTuplesSorting = std::tuple<std::tuple<int,unsigned,double>>;
 using valueTuplesSorting = std::tuple<TVT::NUM<vector_sizes.size()>>;
 
 using TestTypes = SortTest<TVT::getPermutations<typesTuplesSorting,valueTuplesSorting>::tuple>::Types;
+#define GET_TYPE(id) typename std::tuple_element<id, typename TypeParam::types>::type
+#define GET_VALUE_ID(id) std::tuple_element<id, typename TypeParam::valuesId>::type::value
 
-#define MY_TYPED_TEST(...) TYPED_TEST(__VA_ARGS__)
+#define TEMPLATED_TEST_SUITE(caseName, types)\
+                template <typename T>\
+                class caseName : public ::testing::Test {};\
+                TYPED_TEST_SUITE(caseName, types);
+
+#define TEMPLATED_TEST(...) TYPED_TEST(__VA_ARGS__)
 #define __sort insertionSort
-#define __testName insertionSortCheck
 #define __SortTest InsertionSortTest
 #include "concrete_example.h"
 #undef __sort
 #define __sort selectionSort
-#undef __testName
-#define __testName selectionSortCheck
 #undef __SortTest
 #define __SortTest SelectionSortTest
 #endif // CONCRETE_EXAMPLE_H
 
+TEMPLATED_TEST_SUITE(__SortTest, TestTypes)
 
-template <typename T>
-class __SortTest : public ::testing::Test {};
-
-TYPED_TEST_CASE(__SortTest, TestTypes);
-
-MY_TYPED_TEST(__SortTest, __testName)
+TEMPLATED_TEST(__SortTest, TypeAndSizeParameterizedSorting)
 {
-    std::vector<int> vec = makeRandomVector<int>(10);
+    using TYPE0 = GET_TYPE(0);
+    auto value_id_0 = GET_VALUE_ID(0);
+    auto value0 = vector_sizes.at(value_id_0);
+    auto vec = makeRandomVector<TYPE0>(value0);
     __sort(vec.begin(),vec.end());
     ASSERT_TRUE(std::is_sorted(vec.begin(),vec.end()));
 }
+
+
+
+
+
+
+
+
+
+
