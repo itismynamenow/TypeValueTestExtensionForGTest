@@ -7,7 +7,8 @@
 
 
 //Below is a general illustration of how TVT::getPermutations generates
-//all permutations of given groups of types and valuesId
+//all permutations for types and valuesId and how these can be used
+//to perform test that need type and value parameters at the same time
 template<typename T>
 struct Test;
 

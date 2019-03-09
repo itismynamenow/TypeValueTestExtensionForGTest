@@ -8,7 +8,8 @@ CONFIG -= qt
 
 HEADERS += \
     type_value_test.h \
-    example.h
+    concrete_example.h \
+    general_example.h
 
 SOURCES += \
         main.cpp
