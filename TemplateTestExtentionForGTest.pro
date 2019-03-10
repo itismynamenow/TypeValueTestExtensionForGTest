@@ -11,7 +11,8 @@ CONFIG -= qt
 HEADERS += \
     type_value_test.h \
     concrete_example.h \
-    general_example.h
+    general_example.h \
+    applied_example.h
 
 SOURCES += \
         main.cpp
