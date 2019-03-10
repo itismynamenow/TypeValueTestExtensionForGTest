@@ -121,9 +121,9 @@ template <typename T>
 class TypedTest : public ::testing::Test {};
 
 using typesTuples = std::tuple<std::tuple<int,unsigned,double,ElementWithComparator>>;
-using valueTuples = std::tuple<TVT::NUM<4>,TVT::NUM<3>>;
+using valueTuples = std::tuple<TVT::NUM<4>,TVT::NUM<7>>;
 
-using TestTypes = Test<TVT::getPermutations<typesTuples,valueTuples>::tuple>::Types;
+//using TestTypes = Test<TVT::getPermutations<typesTuples,valueTuples>::tuple>::Types;
 
 template <typename T1, typename ...T>
 struct Type;
@@ -162,7 +162,8 @@ struct MyTypeList<std::tuple<Ts...>>{
   typedef ::testing::internal::NameGeneratorSelector<__VA_ARGS__>::type  \
       GTEST_NAME_GENERATOR_(CaseName)
 
-using myTypes = typename std::tuple<int,long,float,double>;
+//using myTypes = typename std::tuple<int,long,float,double>;
+using myTypes = TVT::getPermutations<typesTuples,valueTuples>::tuple;
 
 ////TYPED_TEST_SUITE(TypedTest, TestTypes);
 MY_TYPED_TEST_SUITE(TypedTest, myTypes );
@@ -171,8 +172,8 @@ TYPED_TEST(TypedTest, printTypes)
 {
 //    using TYPE0 = typename std::tuple_element<0, typename TypeParam::types>;
 //    using TYPE1 = typename std::tuple_element<1, typename TypeParam::types>;
-    TestTypes testTypes;
     ::testing::Types<int> typeInt;
+    int a = 0;
 //    const std::size_t value_id_0 = std::tuple_element<0, typename TypeParam::valuesId>::type::value;
 //    const std::size_t value_id_1 = std::tuple_element<1, typename TypeParam::valuesId>::type::value;
 

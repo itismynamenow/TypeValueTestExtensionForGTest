@@ -57,9 +57,13 @@ namespace TVT {
         struct getTypeFromTuple{
             using current_type_tuple = typename std::tuple_element<J, TypesTuples>::type;
             static constexpr std::size_t current_type_tuple_size = std::tuple_size<current_type_tuple>::value;
-            static constexpr std::size_t current_frequency = std::tuple_element<J,TypesFrequencies>::type::value;
-            static constexpr std::size_t current_type_id = (I::value / (current_frequency/current_type_tuple_size)) % current_type_tuple_size;
+            static constexpr std::size_t current_frequency = std::tuple_element<J,TypesFrequencies>::type::value;            
 
+            static_assert(current_frequency != 0, "current_frequency == 0");
+            static_assert(current_type_tuple_size != 0, "current_type_tuple_size == 0");
+
+            static constexpr std::size_t ratio = current_frequency/current_type_tuple_size;
+            static constexpr std::size_t current_type_id = (I::value / ((ratio == 0)?1:ratio)) % current_type_tuple_size;
             using type = typename std::tuple_element<current_type_id, current_type_tuple>::type;
         };
 
@@ -85,7 +89,12 @@ namespace TVT {
         struct getValuesIdFromTuple{
             static constexpr std::size_t current_frequency = std::tuple_element<J,ValuesIdFrequencies>::type::value;
             static constexpr std::size_t current_value_id = std::tuple_element<J, ValuesIdTuple>::type::value;
-            static constexpr std::size_t current_value = (I::value / (current_frequency / current_value_id)) % current_value_id;
+
+            static_assert(current_frequency != 0, "current_frequency == 0");
+            static_assert(current_value_id != 0, "current_frequency == 0");
+
+            static constexpr std::size_t ratio = current_frequency / current_value_id;
+            static constexpr std::size_t current_value = (I::value / ((ratio == 0)?1:ratio)) % current_value_id;
             using type = NUM<current_value>;
         };
 
