@@ -1,6 +1,7 @@
 #ifndef APPLIED_EXAMPLE_H
 #define APPLIED_EXAMPLE_H
 #include <functional>
+#include <string>
 #include <algorithm>
 #include <stdlib.h>     /* srand, rand */
 
@@ -71,6 +72,13 @@ struct MergeSort: public SortingAlgorithm<ITERATOR, COMPARATOR>{
     virtual ~MergeSort(){}
 };
 
+template<class ITERATOR, class COMPARATOR = std::less<typename std::iterator_traits<ITERATOR>::value_type>>
+struct FakeSort: public SortingAlgorithm<ITERATOR, COMPARATOR>{
+    virtual void sort(const ITERATOR first,const ITERATOR last, const COMPARATOR comparator = COMPARATOR ()) override{
+    }
+    virtual ~FakeSort(){}
+};
+
 /// Below are few custom types that we will use for sorting
 /// One of them contains less operator that will be used for sorting
 /// Another contains custom comparator that we will pass as argument
@@ -108,28 +116,39 @@ std::vector<T>makeRandomVector(int size){
     return vec;
 }
 
+constexpr std::array<int,4> sizes {0,1,2,10};
+
+template<typename T>
+static SortingAlgorithm<typename std::vector<T>::iterator>* getSortingClass(int id){
+    if(id == 0){
+        return new BubbleSort<typename std::vector<T>::iterator>();
+    }else if(id == 1){
+        return new InsertionSort<typename std::vector<T>::iterator>();
+    }else if(id == 2){
+        return new SelectionSort<typename std::vector<T>::iterator>();
+    }else if(id == 3){
+        return new FakeSort<typename std::vector<T>::iterator>();
+    }
+}
+
 template <typename T>
 class TypedTest : public ::testing::Test {};
 
-using typesTuples = std::tuple<std::tuple<int,unsigned,double,ElementWithComparator>>;
-using valueTuples = std::tuple<TT::NUM<4>,TT::NUM<7>>;
-
-//using TestTypes = Test<TVT::getPermutations<typesTuples,valueTuples>::tuple>::Types;
-
-
-//using myTypes = typename std::tuple<int,long,float,double>;
+using typesTuples = std::tuple<std::tuple<int,unsigned,double,ElementWithLessOperator>>;
+using valueTuples = std::tuple<TT::NUM<4>,TT::NUM<sizes.size()>>;
 using myTypes = TT::getPermutations<typesTuples,valueTuples>::tuple;
 
-TYPED_TEST_SUITE_MODED(TypedTest, myTypes );
-
-TYPED_TEST(TypedTest, printTypes)
+TYPED_TEST_SUITE_MODED(TypedTest, myTypes);
+TYPED_TEST(TypedTest, sortingViaLessOperator)
 {
-//    using TYPE0 = typename std::tuple_element<0, typename TypeParam::types>;
-//    using TYPE1 = typename std::tuple_element<1, typename TypeParam::types>;
-    ::testing::Types<int> typeInt;
+    using TYPE0 = typename std::tuple_element<0, typename TypeParam::types>::type;
     int a = 0;
-//    const std::size_t value_id_0 = std::tuple_element<0, typename TypeParam::valuesId>::type::value;
-//    const std::size_t value_id_1 = std::tuple_element<1, typename TypeParam::valuesId>::type::value;
+    const std::size_t value_id_0 = std::tuple_element<0, typename TypeParam::valuesId>::type::value;
+    const std::size_t value_id_1 = std::tuple_element<1, typename TypeParam::valuesId>::type::value;
+    auto sortObject = getSortingClass<TYPE0>(value_id_0);
+    auto vec = makeRandomVector<TYPE0>(sizes.at(value_id_0));
+    sortObject->sort(vec.begin(),vec.end());
+    ASSERT_TRUE(std::is_sorted(vec.begin(),vec.end()));
 
 }
 

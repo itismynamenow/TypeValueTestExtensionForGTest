@@ -6,6 +6,8 @@
 namespace testing{
     namespace internal{
         struct Types0;
+        template <typename T>
+        std::string GetTypeName();
     }
 }
 
@@ -282,6 +284,30 @@ namespace TT {
     template <typename ...Ts>
     struct TypeList<std::tuple<Ts...>>{
       typedef typename Types<Ts...>::type type;
+    };
+
+
+    struct NameGenerator {
+      template <typename T>
+      static std::string GetName(int i) {
+        T t;
+        auto typesString = ::testing::internal::GetTypeName<typename T::types>();
+        typesString = typesString.substr(std::string("std::tuple").size());
+        auto valuesIdString = ::testing::internal::GetTypeName<typename T::valuesId>();
+        valuesIdString = valuesIdString.substr(std::string("std::tuple").size());
+        std::size_t index;
+        while(index = valuesIdString.find("TT::NUM<"), index !=  std::string::npos){
+            valuesIdString.erase(index,std::string("TT::NUM<").size());
+        }
+        while(index = valuesIdString.find(">"), index !=  std::string::npos){
+            valuesIdString.erase(index,std::string(">").size());
+        }
+        while(index = valuesIdString.find("ull"), index !=  std::string::npos){
+            valuesIdString.erase(index,std::string("ull").size());
+        }
+        valuesIdString += ">";
+        return typesString + " " + valuesIdString;
+      }
     };
 }
 
