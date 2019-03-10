@@ -108,65 +108,19 @@ std::vector<T>makeRandomVector(int size){
     return vec;
 }
 
-template<typename T>
-struct Test;
-
-template<typename ...T>
-struct Test<std::tuple<T...>>
-{
-    using Types = ::testing::Types<T...>;
-};
-
 template <typename T>
 class TypedTest : public ::testing::Test {};
 
 using typesTuples = std::tuple<std::tuple<int,unsigned,double,ElementWithComparator>>;
-using valueTuples = std::tuple<TVT::NUM<4>,TVT::NUM<7>>;
+using valueTuples = std::tuple<TT::NUM<4>,TT::NUM<7>>;
 
 //using TestTypes = Test<TVT::getPermutations<typesTuples,valueTuples>::tuple>::Types;
 
-template <typename T1, typename ...T>
-struct Type;
-
-// The empty type list.
-struct Type0 {};
-
-template <typename T1>
-struct Type<T1>{
-    typedef T1 Head;
-    typedef ::testing::internal::Types0 Tail;
-};
-
-template <typename T1, typename ...T>
-struct Type {
-    typedef T1 Head;
-    typedef Type<T...> Tail;
-};
-
-template <typename ...Ts>
-struct Types{
-    typedef Type<Ts...> type;
-};
-
-template <typename ...Ts>
-struct MyTypeList;
-
-template <typename ...Ts>
-struct MyTypeList<std::tuple<Ts...>>{
-  typedef typename Types<Ts...>::type type;
-};
-
-#define MY_TYPED_TEST_SUITE(CaseName, Types, ...)                           \
-  typedef MyTypeList< Types >::type GTEST_TYPE_PARAMS_( \
-      CaseName);                                                         \
-  typedef ::testing::internal::NameGeneratorSelector<__VA_ARGS__>::type  \
-      GTEST_NAME_GENERATOR_(CaseName)
 
 //using myTypes = typename std::tuple<int,long,float,double>;
-using myTypes = TVT::getPermutations<typesTuples,valueTuples>::tuple;
+using myTypes = TT::getPermutations<typesTuples,valueTuples>::tuple;
 
-////TYPED_TEST_SUITE(TypedTest, TestTypes);
-MY_TYPED_TEST_SUITE(TypedTest, myTypes );
+TYPED_TEST_SUITE_MODED(TypedTest, myTypes );
 
 TYPED_TEST(TypedTest, printTypes)
 {

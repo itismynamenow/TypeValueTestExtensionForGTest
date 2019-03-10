@@ -3,7 +3,13 @@
 #include <tuple>
 #include <utility>
 
-namespace TVT {
+namespace testing{
+    namespace internal{
+        struct Types0;
+    }
+}
+
+namespace TT {
     template<typename T, typename V>
     struct Case
     {
@@ -248,7 +254,54 @@ namespace TVT {
                                 std::make_index_sequence<combination_count>>
                              ::tuple;
     };
+
+    template <typename T1, typename ...T>
+    struct Type;
+
+    template <typename T1>
+    struct Type<T1>{
+        typedef T1 Head;
+        //Must be ::testing::internal::Types0 other won't work
+        typedef ::testing::internal::Types0 Tail;
+    };
+
+    template <typename T1, typename ...T>
+    struct Type {
+        typedef T1 Head;
+        typedef Type<T...> Tail;
+    };
+
+    template <typename ...Ts>
+    struct Types{
+        typedef Type<Ts...> type;
+    };
+
+    template <typename ...Ts>
+    struct TypeList;
+
+    template <typename ...Ts>
+    struct TypeList<std::tuple<Ts...>>{
+      typedef typename Types<Ts...>::type type;
+    };
 }
+
+
+
+/**
+ *  Original macro TYPED_TEST_SUITE_MODED relies on
+ *  ::testing::internal::TypeList that can only accept up to
+ *  50 template parameters when C++ standart allows at least
+ *  1024 template parameters. So this macro adresses this issue
+ *  utilizing c++11 parameter pack that allows much bigger
+ *  number of templates arguments.
+ *
+ * @param Types: std::tuple with types
+ */
+#define TYPED_TEST_SUITE_MODED(CaseName, Types, ...)                           \
+  typedef TT::TypeList< Types >::type GTEST_TYPE_PARAMS_( \
+      CaseName);                                                         \
+  typedef ::testing::internal::NameGeneratorSelector<__VA_ARGS__>::type  \
+      GTEST_NAME_GENERATOR_(CaseName)
 
 
 #endif // TYPE_VALUE_TEST_H
