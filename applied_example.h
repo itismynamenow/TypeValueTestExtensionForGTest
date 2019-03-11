@@ -107,7 +107,7 @@ class SortingViaLessOperatorTest : public ::testing::Test {};
 
 /// We using TYPED_TEST_SUITE_MODED because it allows us to have much more
 /// than 50 types allowed by standart TYPED_TEST_SUITE
-TYPED_TEST_SUITE_MODED(SortingViaLessOperatorTest, LessOperatorTypesPermutations);
+TYPED_TEST_SUITE_MODED(SortingViaLessOperatorTest, LessOperatorTypesPermutations, TT::NameGenerator);
 
 TYPED_TEST(SortingViaLessOperatorTest, variableTypeAndSizeSort)
 {
@@ -125,7 +125,7 @@ TYPED_TEST(SortingViaLessOperatorTest, variableTypeAndSizeSort)
 template <typename T>
 class SortingViaComparatorTest : public ::testing::Test {};
 
-TYPED_TEST_SUITE_MODED(SortingViaComparatorTest, ComparatorTypesPermutations);
+TYPED_TEST_SUITE_MODED(SortingViaComparatorTest, ComparatorTypesPermutations, TT::NameGenerator);
 
 TYPED_TEST(SortingViaComparatorTest, variableTypeAndSizeSort)
 {

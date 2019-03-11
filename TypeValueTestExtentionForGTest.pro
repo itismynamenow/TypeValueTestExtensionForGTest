@@ -13,7 +13,8 @@ HEADERS += \
     general_example.h \
     applied_example.h \
     things_to_test.h \
-    lazy_example.h
+    lazy_example.h \
+    type_value_pretty_printer.h
 
 SOURCES += \
         main.cpp

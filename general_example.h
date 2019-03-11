@@ -79,7 +79,7 @@ using TestTypes = Test<TT::getPermutations<typesTuples,valueTuples>::tuple>::Typ
     TT::Case<std::tuple< C, B >,std::tuple<TT::NUM< 2 >,TT::NUM< 1 >>>>]
  */
 
-TYPED_TEST_CASE(TypedTest, TestTypes);
+TYPED_TEST_CASE(TypedTest, TestTypes, TT::NameGenerator);
 
 TYPED_TEST(TypedTest, printTypes)
 {

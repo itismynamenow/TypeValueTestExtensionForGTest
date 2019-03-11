@@ -13,10 +13,10 @@
 /// In applied_example.h we turned sorting functions from things_to_test.h
 /// into classes derived from abstract SortingAlgorithm class which allowed us to
 /// use polymorphism to test all of them. However that approach required us
-/// creating that class hierarchy and writing another helpeing code.
+/// creating that class hierarchy and writing another helping code.
 ///
 /// What if we are lazy or want to test our sorting function without
-/// any additional work? Well, below is one way to do it. Of course it
+/// any modifications? Well, below is one way to do it. Of course it
 /// will be pretty ugly and dangerous, but that's fine for test I guess
 
 template<typename T>
@@ -40,15 +40,15 @@ using valueTuplesSorting = std::tuple<TT::NUM<vector_sizes.size()>>;
 
 
 /// Below we generate type/valueId permutations
-using LessOperatorSortingTypes = SortTest<TT::getPermutations<lessOperatorSortingTypesTuples,valueTuplesSorting>::tuple>::Types;
-using ComparatorSortingTypes = SortTest<TT::getPermutations<comparatorSortingTypesTuples,valueTuplesSorting>::tuple>::Types;
+using LessOperatorSortingTypes = TT::getPermutations<lessOperatorSortingTypesTuples,valueTuplesSorting>::tuple;
+using ComparatorSortingTypes = TT::getPermutations<comparatorSortingTypesTuples,valueTuplesSorting>::tuple;
 
 /// Macro below exists to prevent problems that occure when we pass one
 /// macro into another. In such case if another macro uses ## or # first
 /// macro will not be expanded. To address the issue such proxy macro is used
 #define TEMPLATED_TEST(...) TYPED_TEST(__VA_ARGS__)
 
-#define TEMPLATED_TEST_SUITE(caseName, types) TYPED_TEST_SUITE(caseName, types);
+#define TEMPLATED_TEST_SUITE(...) TYPED_TEST_SUITE_MODED(__VA_ARGS__);
 
 /// Some strange code below replaces PLACEHOLDER macro with
 /// names of our sorting functions and pastes test code
@@ -75,7 +75,7 @@ using ComparatorSortingTypes = SortTest<TT::getPermutations<comparatorSortingTyp
 template <typename T>
 class PLACEHOLDER(Test0) : public ::testing::Test {};
 
-TEMPLATED_TEST_SUITE(PLACEHOLDER(Test0), LessOperatorSortingTypes)
+TEMPLATED_TEST_SUITE(PLACEHOLDER(Test0), LessOperatorSortingTypes, TT::NameGenerator)
 
 TEMPLATED_TEST(PLACEHOLDER(Test0), LessOperatorSorting)
 {
@@ -90,7 +90,7 @@ TEMPLATED_TEST(PLACEHOLDER(Test0), LessOperatorSorting)
 template <typename T>
 class PLACEHOLDER(Test1) : public ::testing::Test {};
 
-TEMPLATED_TEST_SUITE(PLACEHOLDER(Test1), ComparatorSortingTypes)
+TEMPLATED_TEST_SUITE(PLACEHOLDER(Test1), ComparatorSortingTypes, TT::NameGenerator)
 
 TEMPLATED_TEST(PLACEHOLDER(Test1), ComparatorSorting)
 {
