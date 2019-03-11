@@ -351,8 +351,8 @@ void TypeValuePrettyUnitTestResultPrinter::OnTestCaseStart(const TestSuite& test
 void TypeValuePrettyUnitTestResultPrinter::OnTestStart(const TestInfo& test_info) {
   ColoredPrintf(COLOR_GREEN,  "[ RUN      ] ");
 //  PrintTestName(test_info.test_suite_name(), test_info.name());
-//  printf("%s\n");
-  printf("\n",test_info.name());
+//  printf("\n");
+  printf("%s %s\n",test_info.name(),test_info.test_suite_name());
   fflush(stdout);
 }
 

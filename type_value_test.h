@@ -325,6 +325,7 @@ namespace TT {
  *
  * @param Types: std::tuple with types
  */
+
 #define TYPED_TEST_SUITE_MODED(CaseName, Types, ...)                           \
   typedef TT::TypeList< Types >::type GTEST_TYPE_PARAMS_( \
       CaseName);                                                         \

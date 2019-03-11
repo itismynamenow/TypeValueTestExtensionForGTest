@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "general_example.h"
-#include "lazy_example.h"
+//#include "general_example.h"
+//#include "lazy_example.h"
 #include "applied_example.h"
 #include "type_value_pretty_printer.h"
 
