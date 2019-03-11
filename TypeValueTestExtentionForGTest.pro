@@ -10,9 +10,10 @@ CONFIG -= qt
 
 HEADERS += \
     type_value_test.h \
-    concrete_example.h \
     general_example.h \
-    applied_example.h
+    applied_example.h \
+    things_to_test.h \
+    lazy_example.h
 
 SOURCES += \
         main.cpp
