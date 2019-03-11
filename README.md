@@ -81,3 +81,4 @@ Also code containes some usefulnish macros
 #define GET_TYPE(id) typename std::tuple_element<id, typename TypeParam::types>::type
 #define GET_VALUE_ID(id) std::tuple_element<id, typename TypeParam::valuesId>::type::value
 ```
+All useful code is in "type_value_test.h" file, rest is just examples and helper for examples
