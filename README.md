@@ -1,6 +1,6 @@
 # TypeValueTestExtensionForGTest
  
-Allows tests that are parameterized by types and values at the same time
+Allows to perform tests that are parameterized by types and values at the same time using Google Test
 
 # Why?
 I guess it is easier to explain everything by example. Imagine that you want to test template sorting function. It my look as `sort<T>(It fisrts, It last)`. To test this function it makes sence to sort vectors of different types and size. To my knowleadge popular unit testing frameworks do not allow to parameterize single test with type and value at the same time. Code in this repo provides means to perform such tests.
