@@ -81,4 +81,8 @@ Also code containes some usefulnish macros
 #define GET_TYPE(id) typename std::tuple_element<id, typename TypeParam::types>::type
 #define GET_VALUE_ID(id) std::tuple_element<id, typename TypeParam::valuesId>::type::value
 ```
-All useful code is in "type_value_test.h" file, rest is just examples and helper for examples
+All useful code is in "type_value_test.h" file, rest are just examples and helpers for examples
+
+# Dependencies
+
+Of course this code depends on Google test and has `#include <gtest/gtest.h>` so make sure you have it. However most important file "type_value_test.h" forward declares all stuff related to gtest and does not need any external dependencies.
