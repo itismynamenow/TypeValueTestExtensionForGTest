@@ -1,7 +1,7 @@
-#pragma once
+#ifndef GENERAL_EXAMPLE_H
+#define GENERAL_EXAMPLE_H
 
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 
 #include "type_value_test.h"
 
@@ -94,3 +94,5 @@ TYPED_TEST(TypedTest, printTypes)
     std::cout<<" Types: "<<typeid (typename TYPE0::type).name() <<" "<<typeid (typename TYPE1::type).name()<<" valuesId: "<<value_id_0<<" "<<value_id_1<<std::endl;
     //Do some testing using TYPE0 ,TYPE1... and values from something as MY_GLOBAL_ARRAY0[value_id_0], MY_GLOBAL_ARRAY1[value_id_1]...
 }
+
+#endif // GENERAL_EXAMPLE_H

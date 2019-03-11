@@ -6,7 +6,6 @@
 #include <stdlib.h>     /* srand, rand */
 
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 
 #include "type_value_test.h"
 #include "things_to_test.h"
