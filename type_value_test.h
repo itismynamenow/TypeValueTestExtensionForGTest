@@ -278,6 +278,9 @@ namespace TT {
         typedef Type<Ts...> type;
     };
 
+    /// My replacer for default TypeList
+    /// this implementation supports much more
+    /// than 50 template parameters
     template <typename ...Ts>
     struct TypeList;
 
@@ -286,11 +289,10 @@ namespace TT {
       typedef typename Types<Ts...>::type type;
     };
 
-
+    /// custom name generator that generates much shorter names than default one
     struct NameGenerator {
       template <typename T>
       static std::string GetName(int i) {
-        T t;
         auto typesString = ::testing::internal::GetTypeName<typename T::types>();
         typesString = typesString.substr(std::string("std::tuple").size());
         auto valuesIdString = ::testing::internal::GetTypeName<typename T::valuesId>();
@@ -328,6 +330,11 @@ namespace TT {
       CaseName);                                                         \
   typedef ::testing::internal::NameGeneratorSelector<__VA_ARGS__>::type  \
       GTEST_NAME_GENERATOR_(CaseName)
+
+/// Macros for long code responsible for getting type or valueId
+/// from TypeParam inside TYPED_TEST
+#define GET_TYPE(id) typename std::tuple_element<id, typename TypeParam::types>::type
+#define GET_VALUE_ID(id) std::tuple_element<id, typename TypeParam::valuesId>::type::value
 
 
 #endif // TYPE_VALUE_TEST_H
