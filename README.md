@@ -85,4 +85,4 @@ All useful code is in "type_value_test.h" file, rest are just examples and helpe
 
 # Dependencies
 
-Of course this code depends on Google test and has `#include <gtest/gtest.h>` so make sure you have it. However "type_value_test.h" forward declares all stuff related to gtest and does not need any external dependencies.
+Of course this code depends on Google test and has `#include <gtest/gtest.h>` so make sure you have it. However most important file "type_value_test.h" forward declares all stuff related to gtest and does not need any external dependencies.
